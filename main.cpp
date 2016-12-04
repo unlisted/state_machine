@@ -9,11 +9,12 @@ int main(int argc, char* argv[])
 {
 	cout << "hello world." << endl;
 	StateMachine sm;
-	sm.AddTransition(start, idle, running);
+	auto trans = std::make_pair(idle, running);
+	sm.AddTransition(start, trans);
 	cout << std::endl;
-	sm.AddTransition(stop, running, cancelled);
-	sm.AddTransition(start, cancelled, running);
-	sm.AddTransition(reset, cancelled, initialized);
+	//sm.AddTransition(stop, running, cancelled);
+	//sm.AddTransition(start, cancelled, running);
+	//sm.AddTransition(reset, cancelled, initialized);
 	sm.PrintTransitions();
 	return 0;
 }

@@ -42,13 +42,14 @@ namespace std {
 
 using ActionMap = std::unordered_map<State, std::vector<Action>>;
 using ResultMap = std::unordered_map<Action, State>;
+using Transition = std::tuple<State, State>;
 
 class StateMachine
 {
 public:
 	StateMachine();
 	virtual ~StateMachine();
-	bool AddTransition(Action action, State from, State to);
+	bool AddTransition(Action action, std::pair<State, State> transition);
 	bool Transition(Action action);
 	void PrintTransitions();
 private:
