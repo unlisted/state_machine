@@ -10,7 +10,6 @@ StateMachine::StateMachine()
 bool StateMachine::AddTransition(Action action, std::pair<State, State> transition)
 {
 	auto& actions = _actionMap[transition.first];
-	std::cout << "size of action list: " << actions.size() << std::endl;
 
 	actions.push_back(action);
 	_resultMap[action] = transition.second;
