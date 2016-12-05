@@ -5,6 +5,9 @@ class StateMachineTest: public ::testing::Test {
  protected:
 
 	StateMachineTest() {
+		_sm.AddTransition(start, std::make_pair(idle, running));
+		_sm.AddTransition(stop, std::make_pair(running, cancelled));
+		_sm.Init(idle);
 	}
 
     virtual ~StateMachineTest() {
@@ -29,20 +32,28 @@ class StateMachineTest: public ::testing::Test {
 	StateMachine _sm;
 };
 
-// tests that AddTransition increase size of maps
-TEST_F(StateMachineTest, AddTransitionIncreaseMapsSize)
+TEST_F(StateMachineTest, InitialStateShouldBeIdle)
 {
-	EXPECT_EQ(0, _sm.Size());
-	_sm.AddTransition(start, std::make_pair(idle, running));
-	EXPECT_EQ(1, _sm.Size());
+	auto state = _sm.GetState();
+	EXPECT_EQ(state, idle);
 }
 
-TEST_F(StateMachineTest, TransitionStart)
+TEST_F(StateMachineTest, TransitionIdleToStart)
 {
-	_sm.AddTransition(start, std::make_pair(idle, running));
-	_sm.Transition(start);
-	_sm.GetState();
+	auto res = _sm.Transition(start);
+	EXPECT_TRUE(res);
+	auto state = _sm.GetState();
+	EXPECT_EQ(state, running);
+}
 
+
+TEST_F(StateMachineTest, TransitionStartToCancelled)
+{
+	_sm.Transition(start);
+	auto res = _sm.Transition(stop);
+	ASSERT_TRUE(res);
+	auto state = _sm.GetState();
+	EXPECT_EQ(cancelled, state);
 }
 
 int main(int argc, char* argv[])

@@ -51,6 +51,7 @@ public:
 	virtual ~StateMachine();
 	bool AddTransition(Action action, std::pair<State, State> transition);
 	bool Transition(Action action);
+	bool Init(State initial_state);
 
 	void PrintTransitions();
 	size_t Size() { return _actionMap.size(); }
