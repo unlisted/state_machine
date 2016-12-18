@@ -7,6 +7,7 @@ class StateMachineTest: public ::testing::Test {
 	StateMachineTest() {
 		_sm.AddTransition(start, std::make_pair(idle, running));
 		_sm.AddTransition(stop, std::make_pair(running, cancelled));
+		_sm.AddTransition(finish, std::make_pair(running, finished));
 		_sm.Init(idle);
 	}
 

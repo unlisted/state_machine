@@ -1,5 +1,7 @@
 #pragma once
 
+#include <functional>
+#include <memory>
 #include <unordered_map>
 #include <vector>
 
@@ -40,8 +42,17 @@ namespace std {
 	};
 }
 
+// State: Current State
+// Actions: Allowed Actions
 using ActionMap = std::unordered_map<State, std::vector<Action>>;
+
+// Action: Desired action
+// Result: State resulting from action
 using ResultMap = std::unordered_map<Action, State>;
+
+// Action: Desired Action
+// Function: State transition success depends on result 
+using FunctionMap = std::unordered_map<Action, std::unique_ptr<std::function<bool()>>>;
 using Transition = std::tuple<State, State>;
 
 class StateMachine
@@ -49,7 +60,8 @@ class StateMachine
 public:
 	StateMachine();
 	virtual ~StateMachine();
-	bool AddTransition(Action action, std::pair<State, State> transition);
+	bool AddTransition(Action action, std::pair<State, State> transition,
+			std::unique_ptr<std::function<bool()>> func);
 	bool Transition(Action action);
 	bool Init(State initial_state);
 
@@ -58,6 +70,7 @@ public:
 	State GetState() { return _current; }
 private:
 	ActionMap _actionMap;
+	FunctionMap _functionMap;
 	ResultMap _resultMap;
 	State _current;
 };
