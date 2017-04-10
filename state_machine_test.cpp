@@ -5,9 +5,8 @@ class StateMachineTest: public ::testing::Test {
  protected:
 
 	StateMachineTest() {
-		_sm.AddTransition(start, std::make_pair(idle, running));
-		_sm.AddTransition(stop, std::make_pair(running, cancelled));
-		_sm.AddTransition(finish, std::make_pair(running, finished));
+		_sm.AddTransition(start, std::make_pair(idle, running), [](){return true;});
+		_sm.AddTransition(stop, std::make_pair(running, cancelled), [](){ return true; });
 		_sm.Init(idle);
 	}
 
@@ -41,7 +40,7 @@ TEST_F(StateMachineTest, InitialStateShouldBeIdle)
 
 TEST_F(StateMachineTest, TransitionIdleToStart)
 {
-	auto res = _sm.Transition(start);
+	auto res = _sm.DoTransition(start);
 	EXPECT_TRUE(res);
 	auto state = _sm.GetState();
 	EXPECT_EQ(state, running);
@@ -50,8 +49,8 @@ TEST_F(StateMachineTest, TransitionIdleToStart)
 
 TEST_F(StateMachineTest, TransitionStartToCancelled)
 {
-	_sm.Transition(start);
-	auto res = _sm.Transition(stop);
+	_sm.DoTransition(start);
+	auto res = _sm.DoTransition(stop);
 	ASSERT_TRUE(res);
 	auto state = _sm.GetState();
 	EXPECT_EQ(cancelled, state);
