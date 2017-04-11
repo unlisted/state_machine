@@ -13,6 +13,7 @@ void StateMachine::AddTransition(Action action, Transition transition, std::func
 	actions.push_back(action);
 	_resultMap[action] = transition.second;
     _funcMap[action] = func;
+
 }
 
 bool StateMachine::Init(State initial_state)

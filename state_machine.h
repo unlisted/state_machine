@@ -58,7 +58,6 @@ class StateMachine
 public:
 	StateMachine();
 	virtual ~StateMachine();
-
 	bool Init(State initial_state);
     void AddTransition(Action action, Transition transition, std::function<bool()> func);
 	bool DoTransition(Action action);
