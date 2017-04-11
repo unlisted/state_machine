@@ -18,7 +18,7 @@ int main(int argc, char* argv[])
 	sm.PrintTransitions();
 	auto current = sm.GetState();
 	cout << "Current: " << current << endl;
-	sm.Transition(start);
+	sm.DoTransition(start);
 	current = sm.GetState();
 	cout << "Current: " << current << endl;
 	return 0;
