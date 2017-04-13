@@ -54,10 +54,14 @@ bool StateMachine::DoTransition(Action action)
 		}
 	}
 
-    if (valid && _funcMap[action]()) {
+    if (!valid)
+        return false;
+
+    if (_funcMap[action] == nullptr || _funcMap[action]()) {
         _current = _resultMap[action];
         return true;
     }
+
 	return false;
 
 }

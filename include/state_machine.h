@@ -56,19 +56,18 @@ using Transition = std::pair<State, State>;
 class StateMachine
 {
 public:
+	State GetState() { return _current; }
+
+protected:
 	StateMachine();
 	virtual ~StateMachine();
 	bool Init(State initial_state);
     void AddTransition(Action action, Transition transition, std::function<bool()> func);
 	bool DoTransition(Action action);
-
 	void PrintTransitions();
-	size_t Size() { return _actionMap.size(); }
-	State GetState() { return _current; }
+
 private:
-	std::function<int()> _func;
 	ActionMap _actionMap;
-	FunctionMap _functionMap;
 	ResultMap _resultMap;
     FunctionMap _funcMap;
 	State _current;
