@@ -5,40 +5,40 @@
 #include <vector>
 
 enum State {
-	initialized,
-	idle,
-	running,
-	finished,
-	cancelled,
-	error
+    initialized,
+    idle,
+    running,
+    finished,
+    cancelled,
+    error
 };
 
 enum Action {
-	start,
-	stop,
-	cancel,
-	reset,
-	finish
+    start,
+    stop,
+    cancel,
+    reset,
+    finish
 };
 
 namespace std {
 
-	template<>
-	struct hash<Action> {
-		std::size_t operator()(const Action& a) const
-		{
-			return std::hash<int>()(a);
-		}
-	};
+    template<>
+    struct hash<Action> {
+        std::size_t operator()(const Action a) const
+        {
+            return static_cast<std::size_t>(a);
+        }
+    };
 
-	template<>
-	struct hash<State>
-	{
-		std::size_t operator()(const State& s) const
-		{
-			return std::hash<int>()(s);
-		}
-	};
+    template<>
+    struct hash<State>
+    {
+        std::size_t operator()(const State s) const
+        {
+            return static_cast<std::size_t>(s);
+        }
+    };
 }
 
 // State: Current State
@@ -56,19 +56,19 @@ using Transition = std::pair<State, State>;
 class StateMachine
 {
 public:
-	State GetState() { return _current; }
+    State GetState() { return _current; }
 
 protected:
-	StateMachine();
-	virtual ~StateMachine();
-	bool Init(State initial_state);
+    StateMachine();
+    virtual ~StateMachine();
+    bool Init(State initial_state);
     void AddTransition(Action action, Transition transition, std::function<bool()> func);
-	bool DoTransition(Action action);
-	void PrintTransitions();
+    bool DoTransition(Action action);
+    void PrintTransitions();
 
 private:
-	ActionMap _actionMap;
-	ResultMap _resultMap;
+    ActionMap _actionMap;
+    ResultMap _resultMap;
     FunctionMap _funcMap;
-	State _current;
+    State _current;
 };
