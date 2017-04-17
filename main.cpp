@@ -5,17 +5,15 @@
 
 using namespace std;
 
-class RandomState: public StateMachine
+class StatefulObject: public StateMachine
 {
 public:
-    RandomState()
+    StatefulObject()
     {
         AddTransition(start, make_pair(idle, running), []{return true;});
         AddTransition(stop, make_pair(running, idle), []{return true;});
         AddTransition(cancel, make_pair(idle, cancelled), []{return true;});
-        AddTransition(reset, make_pair(cancelled, idle), function<bool()>(nullptr));
-
-        cout << GetState() << endl;
+        AddTransition(reset, make_pair(cancelled, idle));
 
         Init(idle);
         cout << GetState() << endl;
@@ -37,6 +35,6 @@ public:
 
 int main(int argc, char* argv[])
 {
-    RandomState rs;
+    StatefulObject rs;
 	return 0;
 }

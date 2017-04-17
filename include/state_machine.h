@@ -41,6 +41,8 @@ namespace std {
     };
 }
 
+using Transition = std::pair<State, State>;
+
 // State: Current State
 // Actions: Allowed Actions
 using ActionMap = std::unordered_map<State, std::vector<Action>>;
@@ -48,10 +50,10 @@ using ActionMap = std::unordered_map<State, std::vector<Action>>;
 // Action: Desired action
 // Result: State resulting from action
 using ResultMap = std::unordered_map<Action, State>;
+
 // Action: Desired Action
 // Function: State transition success depends on result 
 using FunctionMap = std::unordered_map<Action, std::function<bool()>>;
-using Transition = std::pair<State, State>;
 
 class StateMachine
 {
@@ -62,7 +64,7 @@ protected:
     StateMachine();
     virtual ~StateMachine();
     bool Init(State initial_state);
-    void AddTransition(Action action, Transition transition, std::function<bool()> func);
+    void AddTransition(Action action, Transition transition, const std::function<bool()> &func = std::function<bool()>(nullptr));
     bool DoTransition(Action action);
     void PrintTransitions();
 
